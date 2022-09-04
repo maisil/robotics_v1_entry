@@ -4,17 +4,18 @@
 #include <cstdint>
 #include <vector>
 
-template <typename T>
-class SolutionEvaluator {
+template <typename T> class SolutionEvaluator {
 public:
   SolutionEvaluator() = delete;
 
   static int32_t compare(const std::vector<T> &computed,
                          const std::vector<T> &predefined) {
     const size_t size = computed.size();
+
     if (size != predefined.size()) {
-      std::cout << "Computed size: " << size << " vs Predefined size: "
-                << predefined.size() << " mismatch" << std::endl;
+      std::cout << "Computed size: " << size
+                << " vs Predefined size: " << predefined.size() << " mismatch"
+                << std::endl;
       return EXIT_FAILURE;
     }
 

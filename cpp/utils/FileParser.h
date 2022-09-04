@@ -1,11 +1,11 @@
 #ifndef FILEPARSER_H_
 #define FILEPARSER_H_
 
+#include <fstream>
+#include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <fstream>
-#include <sstream>
-#include <iostream>
 
 #include "CommonDefines.h"
 #include "FunctionTracer.h"
@@ -16,19 +16,18 @@ void clearValues(std::string &line, std::istringstream &istr) {
   istr.clear();
   istr.str("");
 }
-}
+} // namespace
 
-template <typename T>
-class FileParser {
+template <typename T> class FileParser {
 public:
   FileParser() = delete;
 
   static int32_t generateData(std::vector<T> &outInputData,
                               std::vector<T> &outOutputData) {
-    FunctionTracer<std::chrono::milliseconds> tracer("generateData",
-        "ms //not included into solution timings");
+    FunctionTracer<std::chrono::milliseconds> tracer(
+        "generateData", "ms //not included into solution timings");
 
-    constexpr auto inputFile = "input.bin";
+    constexpr auto inputFile = "../cpp/test_data/big_test_case/input.bin";
     int32_t err = FileParser<T>::parseFile(inputFile, outInputData);
     if (EXIT_SUCCESS != err) {
       std::cerr << "FileParser::parseFile() failed for file: " << inputFile
@@ -36,7 +35,7 @@ public:
       return EXIT_FAILURE;
     }
 
-    constexpr auto outputFile = "output.bin";
+    constexpr auto outputFile = "../cpp/test_data/big_test_case/output.bin";
     err = FileParser<T>::parseFile(outputFile, outOutputData);
     if (EXIT_SUCCESS != err) {
       std::cerr << "FileWritter::generateFile() failed for file: " << inputFile
@@ -70,17 +69,17 @@ public:
       std::getline(ifstream, line);
       istr.str(line);
 
-      //parse resolution
+      // parse resolution
       istr >> res.width >> res.height;
       clearValues(line, istr);
 
-      //create item
+      // create item
       T &item = outData.emplace_back(res);
 
       std::getline(ifstream, line);
       istr.str(line);
 
-      //fill item data
+      // fill item data
       istr >> item;
 
       clearValues(line, istr);
